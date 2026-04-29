@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Troia Store | Edição Especial</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik+Dirt&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+
+    <style>
+        .font-graffiti { font-family: 'Rubik Dirt', cursive; }
+        
+        /* Novo Fundo Dinâmico */
+        body {
+            margin: 0;
+            padding: 0;
+            background: url('https://media.discordapp.net/attachments/1498871533207294084/1498877908792512552/220764.gif?ex=69f36b15&is=69f21995&hm=eaeae9ec5e8499aa22611335e82818ff25582d82fa9a036cab75df69ec06fc20&=') no-repeat center center fixed;
+            background-size: cover;
+            overflow-x: hidden;
+        }
+
+        /* Overlay para garantir a leitura do texto */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: -1;
+        }
+
+        /* Efeito de Vidro Refinado */
+        .glass {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .product-img {
+            width: 110px;
+            height: 75px;
+            object-fit: cover;
+            border-radius: 12px;
+            transition: all 0.4s ease;
+        }
+
+        .group:hover .product-img {
+            transform: scale(1.1) rotate(-2deg);
+            box-shadow: 0 0 15px rgba(225, 29, 72, 0.4);
+        }
+
+        /* Scrollbar Estilizada */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #000; }
+        ::-webkit-scrollbar-thumb { background: #e11d48; border-radius: 10px; }
+    </style>
+</head>
+<body>
+    <div class="overlay"></div>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState } = React;
+
+        const products = [
+            { 
+                category: "GTA", 
+                name: "GTA Instalável", 
+                image: "https://media.discordapp.net/attachments/1498527022790475837/1498805697054507209/capsule_616x353.png?ex=69f3d094&is=69f27f14&hm=eb800a29d20844075164eb5e0f7f64826db628e18ac65182fc0b06b5516c478c&=&format=webp&quality=lossless" 
+            },
+            { 
+                category: "GTA", 
+                name: "Base VRPex", 
+                image: "https://media.discordapp.net/attachments/1498527022790475837/1498527458234863778/content.png?ex=69f37633&is=69f224b3&hm=1dfae49da095643c08b8ed585c6e2500ceda7fa59e99e4405dcd30d2191846e6&=&format=webp&quality=lossless" 
+            },
+            { 
+                category: "GTA", 
+                name: "Base CPXGG", 
+                image: "https://media.discordapp.net/attachments/1498527022790475837/1498527224217866330/content.png?ex=69f375fb&is=69f2247b&hm=f0ddb442b39de1e46a427445b34d79ecd55aced5700c8561e15f5e8f8820de07&=&format=webp&quality=lossless" 
+            },
+            { 
+                category: "Peds", 
+                name: "Peds Kids", 
+                image: "https://media.discordapp.net/attachments/1498517019987808342/1498520721599762582/image.png?ex=69f36fed&is=69f21e6d&hm=18d6a2e4ae6c012742e0dbd31b42230b0188ecb1550b2330ce717fdfec064f38&=&format=webp&quality=lossless" 
+            },
+            { 
+                category: "Peds", 
+                name: "Peds Adolescentes", 
+                image: "https://media.discordapp.net/attachments/1459909589154660352/1469044630476554433/image.png?ex=69f3a66d&is=69f254ed&hm=42b00bfc7c7527322d349fdfc6f1d24a36321faa7212b028da525eacb5d66010&=&format=webp&quality=lossless" 
+            },
+            { 
+                category: "Peds", 
+                name: "Peds Exclusive", 
+                image: "https://media.discordapp.net/attachments/1459909589154660352/1497786812368818316/image.png?ex=69f3676b&is=69f215eb&hm=a69d81d6133f25ff249328b2ead02ce0245fd127ddec5c63cfd586be3fc8a85a&=&format=webp&quality=lossless" 
+            },
+            { 
+                category: "Contas", 
+                name: "Conta Rockstar", 
+                image: "https://img.viva.com.br/fit-in/1200x630/viva-uploads/2021/04/Rockstar-Games-Social-Club.jpg" 
+            },
+            { 
+                category: "Contas", 
+                name: "Conta Steam", 
+                image: "https://shared.fastly.steamstatic.com/store_images/logo_steam_tcn.png" 
+            }
+        ];
+
+        function App() {
+            const [key, setKey] = useState("");
+            const [unlocked, setUnlocked] = useState(false);
+
+            const handleUnlock = () => {
+                if (key === "troiastore1") {
+                    setUnlocked(true);
+                } else {
+                    alert("Acesso Negado: Key Inválida.");
+                }
+            };
+
+            if (!unlocked) {
+                return (
+                    <div className="min-h-screen flex items-center justify-center p-4">
+                        <div className="glass p-10 rounded-3xl w-full max-w-md shadow-2xl text-center animate__animated animate__fadeInDown">
+                            <h1 className="font-graffiti text-6xl text-white mb-2 drop-shadow-lg">TROIA</h1>
+                            <p className="text-zinc-400 mb-8 font-bold text-[10px] uppercase tracking-[0.4em]">Unlock Access</p>
+                            <input 
+                                type="password" 
+                                className="w-full bg-black/40 border border-white/10 text-white p-4 rounded-2xl mb-6 focus:outline-none focus:border-red-600 transition-all text-center placeholder:text-zinc-600"
+                                placeholder="INSIRA SUA CHAVE"
+                                value={key}
+                                onChange={(e) => setKey(e.target.value)}
+                            />
+                            <button 
+                                onClick={handleUnlock}
+                                className="w-full bg-red-600 hover:bg-white hover:text-red-600 text-white font-black py-4 rounded-2xl transition-all duration-300 shadow-xl"
+                            >
+                                ACESSAR AGORA
+                            </button>
+                        </div>
+                    </div>
+                );
+            }
+
+            return (
+                <div className="min-h-screen text-white font-sans animate__animated animate__fadeIn">
+                    <header className="text-center py-24">
+                        <h1 className="font-graffiti text-8xl md:text-[10rem] tracking-tighter text-white drop-shadow-[0_10px_20px_rgba(0,0,0,0.8)] animate__animated animate__pulse animate__infinite animate__slow">
+                            TROIA STORE
+                        </h1>
+                        <p className="text-red-500 mt-2 text-xs font-black uppercase tracking-[0.6em]">Exclusividade & Performance</p>
+                    </header>
+
+                    <main className="max-w-5xl mx-auto p-6 pb-40">
+                        <div className="grid gap-4">
+                            {products.map((item, index) => (
+                                <div key={index} 
+                                     style={{ animationDelay: `${index * 0.1}s` }}
+                                     className="flex flex-col sm:flex-row items-center justify-between glass p-5 rounded-[2rem] border border-white/5 hover:border-red-600/50 transition-all group animate__animated animate__fadeInRight">
+                                    <div className="flex flex-col sm:flex-row items-center gap-8">
+                                        <div className="relative">
+                                            <img src={item.image} alt={item.name} className="product-img border border-white/10" />
+                                            <div className="absolute inset-0 bg-red-600/10 opacity-0 group-hover:opacity-100 transition-opacity rounded-xl"></div>
+                                        </div>
+                                        <div className="text-center sm:text-left">
+                                            <span className="text-[10px] bg-red-600 text-white px-3 py-1 rounded-md font-black uppercase tracking-widest">
+                                                {item.category}
+                                            </span>
+                                            <h2 className="text-3xl mt-2 font-bold group-hover:text-red-500 transition-colors tracking-tight italic uppercase">{item.name}</h2>
+                                        </div>
+                                    </div>
+                                    <button className="mt-8 sm:mt-0 w-full sm:w-auto bg-white text-black hover:bg-red-600 hover:text-white px-12 py-4 rounded-2xl font-black transition-all transform active:scale-95 shadow-2xl">
+                                        COMPRAR
+                                    </button>
+                                </div>
+                            ))}
+                        </div>
+                    </main>
+
+                    <footer className="text-center text-zinc-500 py-16 bg-black/95 backdrop-blur-2xl border-t border-white/5">
+                        <p className="text-[9px] tracking-[0.5em] uppercase opacity-40 font-black">
+                            © 2026 Troia Store — All Rights Reserved
+                        </p>
+                    </footer>
+                </div>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
